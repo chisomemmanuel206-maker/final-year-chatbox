@@ -1,7 +1,6 @@
 # Core API
 fastapi==0.136.0
 uvicorn==0.45.0
-starlette==0.45.0
 
 # Environment
 python-dotenv==1.2.2
