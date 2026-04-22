@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from app.inference.response_generator import ResponseGenerator
 from fastapi.middleware.cors import CORSMiddleware
+from app.utility.download_model import download_model
 
 app = FastAPI()
 bot = ResponseGenerator()
@@ -23,3 +24,4 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+download_model()
