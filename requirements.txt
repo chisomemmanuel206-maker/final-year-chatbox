@@ -1,11 +1,13 @@
+# =========================
 # Core API
+# =========================
 fastapi==0.136.0
 uvicorn==0.45.0
-
-# Environment
 python-dotenv==1.2.2
 
+# =========================
 # HTTP stack
+# =========================
 requests==2.33.1
 httpx==0.28.1
 httpcore==1.0.9
@@ -13,7 +15,9 @@ httplib2==0.31.2
 anyio==4.13.0
 sniffio==1.3.1
 
-# Google APIs (stable set)
+# =========================
+# Google APIs (stable compatible set)
+# =========================
 google-api-core[grpc]==2.30.3
 google-api-python-client==2.194.0
 google-auth==2.49.2
@@ -24,61 +28,76 @@ protobuf==5.29.6
 grpcio==1.80.0
 grpcio-status>=1.75.1,<2.0.0
 
-# Google GenAI (keep only stable modern stack)
+# Google GenAI
 google-generativeai==0.8.6
 google-genai==1.73.1
 
-# HuggingFace / ML
-huggingface_hub==1.11.0
+# =========================
+# HuggingFace (FIXED COMPATIBILITY)
+# =========================
 transformers==4.48.0
+huggingface_hub==0.26.0
 tokenizers==0.21.0
 safetensors==0.7.0
+filelock==3.29.0
 
-# PyTorch (IMPORTANT FIX)
+# =========================
+# PyTorch (FIXED for Render availability)
+# =========================
 torch==2.11.0
 
-# Math / scientific stack (STABLE)
+# =========================
+# Math / ML support (stable)
+# =========================
 numpy==1.26.4
 sympy==1.14.0
 networkx==3.6.1
 mpmath==1.3.0
-
-# Utils
 tqdm==4.67.3
-packaging==26.1
 regex==2026.4.4
-filelock==3.29.0
-fsspec==2026.3.0
 
-# Web + security
+# =========================
+# Web / Security
+# =========================
 certifi==2026.2.25
 charset-normalizer==3.4.7
 idna==3.11
 urllib3==2.6.3
 
-# FastAPI extras
+# =========================
+# FastAPI / Pydantic
+# =========================
 pydantic==2.13.3
 pydantic_core==2.46.3
 typing_extensions==4.15.0
 typing-inspection==0.4.2
+starlette>=0.46.0
 
+# =========================
 # Templates
+# =========================
 Jinja2==3.1.6
 MarkupSafe==3.0.3
 
-# CLI / tools
+# =========================
+# CLI tools
+# =========================
 click==8.3.2
 typer==0.24.1
 rich==15.0.0
 colorama==0.4.6
 
-# YAML / config
+# =========================
+# Config / crypto
+# =========================
 PyYAML==6.0.3
-
-# Security / crypto
 cryptography==46.0.7
 cffi==2.0.0
 pycparser==3.0
 
-# Google utils
+# =========================
+# Utils
+# =========================
+packaging==26.1
+fsspec==2026.3.0
 uritemplate==4.2.0
