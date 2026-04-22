@@ -1,3 +1,15 @@
+import os
+
+# ✅ ADD THIS
+from app.utils.download_model import download_model
+
+# ✅ ADD THIS (ensure folder exists)
+os.makedirs("models", exist_ok=True)
+
+# ✅ ADD THIS (download before loading model)
+download_model()
+
+
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
