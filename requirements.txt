@@ -16,7 +16,7 @@ anyio==4.13.0
 sniffio==1.3.1
 
 # =========================
-# Google APIs (FIXED COMPATIBILITY)
+# Google APIs (STABLE SET)
 # =========================
 google-api-core[grpc]==2.30.3
 google-api-python-client==2.194.0
@@ -28,12 +28,11 @@ protobuf>=4.25.8,<7.0.0
 grpcio==1.80.0
 grpcio-status==1.75.1
 
-# Google GenAI
+# ONLY ONE GOOGLE AI SDK (IMPORTANT FIX)
 google-generativeai==0.8.6
-google-genai==1.73.1
 
 # =========================
-# HuggingFace (COMPATIBLE SET)
+# HuggingFace (CLEAN SET)
 # =========================
 transformers==4.48.0
 huggingface_hub==0.26.0
@@ -42,12 +41,12 @@ safetensors==0.7.0
 filelock==3.29.0
 
 # =========================
-# PyTorch (Render-safe version)
+# PyTorch (Render-safe)
 # =========================
 torch==2.9.1
 
 # =========================
-# Math / ML
+# ML / Math
 # =========================
 numpy==1.26.4
 sympy==1.14.0
