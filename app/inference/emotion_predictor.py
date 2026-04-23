@@ -1,7 +1,7 @@
 import os
 
 # ✅ ADD THIS
-from app.utils.download_model import download_model
+from app.utility.download_model import download_model
 
 # ✅ ADD THIS (ensure folder exists)
 os.makedirs("models", exist_ok=True)
