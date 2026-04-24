@@ -1,15 +1,4 @@
 import os
-
-# ✅ ADD THIS
-from app.utility.download_model import download_model
-
-# ✅ ADD THIS (ensure folder exists)
-os.makedirs("models", exist_ok=True)
-
-# ✅ ADD THIS (download before loading model)
-download_model()
-
-
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
@@ -20,6 +9,9 @@ class EmotionPredictor:
 
         self.model_path = model_path
         self.threshold = threshold
+
+        # Ensure model directory exists
+        os.makedirs("models", exist_ok=True)
 
         # Load device (GPU if available)
         self.device = torch.device(
@@ -38,13 +30,12 @@ class EmotionPredictor:
         self.model.to(self.device)
         self.model.eval()
 
-        # Load label mapping from model config
+        # Load label mapping
         self.id2label = self.model.config.id2label
 
 
     def predict_emotions(self, text):
 
-        # Tokenize input
         inputs = self.tokenizer(
             text,
             return_tensors="pt",
@@ -53,47 +44,32 @@ class EmotionPredictor:
             max_length=128
         )
 
-        # Move tensors to GPU
         inputs = {k: v.to(self.device) for k, v in inputs.items()}
 
         with torch.no_grad():
-
             outputs = self.model(**inputs)
 
         logits = outputs.logits
 
-        # Convert logits to probabilities
         probs = torch.sigmoid(logits)
-
         probs = probs.squeeze().cpu().numpy()
 
         predicted_emotions = []
 
-        # Apply threshold
         for i, prob in enumerate(probs):
-
             if prob >= self.threshold:
+                predicted_emotions.append({
+                    "emotion": self.id2label[i],
+                    "confidence": float(prob)
+                })
 
-                emotion = self.id2label[i]
-
-                predicted_emotions.append(
-                    {
-                        "emotion": emotion,
-                        "confidence": float(prob)
-                    }
-                )
-
-        # If no emotion passes threshold → choose highest
-        if len(predicted_emotions) == 0:
-
+        # fallback if nothing passes threshold
+        if not predicted_emotions:
             max_index = probs.argmax()
-
-            predicted_emotions.append(
-                {
-                    "emotion": self.id2label[max_index],
-                    "confidence": float(probs[max_index])
-                }
-            )
+            predicted_emotions.append({
+                "emotion": self.id2label[max_index],
+                "confidence": float(probs[max_index])
+            })
 
         return predicted_emotions
 
@@ -103,7 +79,6 @@ if __name__ == "__main__":
     predictor = EmotionPredictor()
 
     while True:
-
         text = input("\nEnter a message (or 'quit'): ")
 
         if text.lower() == "quit":
@@ -112,7 +87,5 @@ if __name__ == "__main__":
         emotions = predictor.predict_emotions(text)
 
         print("\nDetected emotions:")
-
         for e in emotions:
-
             print(f"{e['emotion']} ({e['confidence']:.2f})")
