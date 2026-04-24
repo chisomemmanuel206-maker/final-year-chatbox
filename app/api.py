@@ -6,17 +6,11 @@ from app.inference.response_generator import ResponseGenerator
 from app.utility.download_model import download_model
 
 app = FastAPI()
-
-# ❌ DO NOT initialize here
 bot = None
 
-
-# ✅ Request schema
 class ChatRequest(BaseModel):
     message: str
 
-
-# ✅ CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -43,16 +37,23 @@ def startup_event():
 # ✅ Chat endpoint
 @app.post("/chat")
 def chat(req: ChatRequest):
-    if bot is None:
-        return {"error": "Model not ready yet"}
+    try:
+        print("INPUT:", req.message)
 
-    result = bot.generate(req.message)
+        result = bot.generate(req.message)
 
-    return {
-        "emotion": result.get("emotion", "unknown"),
-        "response": result.get("response", "")
-    }
+        print("OUTPUT:", result)
 
+        return {
+            "debug": True,
+            "result": str(result)
+        }
+
+    except Exception as e:
+        print("ERROR:", str(e))
+        return {
+            "error": str(e)
+        }
 
 # ✅ Health check
 @app.get("/")
