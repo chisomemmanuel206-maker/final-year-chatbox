@@ -1,17 +1,24 @@
 import os
 import gdown
 
-MODEL_PATH = "models/emotion_classifier"
-FILE_ID = "1ihs31LbNNfD390lcsMbdJFcT2SIuWOs-"
+FOLDER_URL = "https://drive.google.com/drive/folders/1dVpdIhj2PW1ibc8gS7kthor51Ns6r9Gq"
+MODEL_DIR = "models/emotion_classifier"
 
 def download_model():
-    if os.path.exists(MODEL_PATH):
-        print("Model already exists.")
+    os.makedirs("models", exist_ok=True)
+
+    # IMPORTANT: prevents re-downloading on every Render restart
+    if os.path.exists(MODEL_DIR) and len(os.listdir(MODEL_DIR)) > 0:
+        print("Model already exists. Skipping download.")
         return
 
     print("Downloading model from Google Drive...")
 
-    url = f"https://drive.google.com/uc?id={FILE_ID}"
-    gdown.download(url, MODEL_PATH, quiet=False)
+    gdown.download_folder(
+        url=FOLDER_URL,
+        output="models",
+        quiet=False,
+        use_cookies=False
+    )
 
     print("Model downloaded successfully.")
