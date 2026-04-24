@@ -7,8 +7,8 @@ from app.utility.download_model import download_model
 
 app = FastAPI()
 
-# Initialize bot
-bot = ResponseGenerator()
+# ❌ DO NOT initialize here
+bot = None
 
 
 # ✅ Request schema
@@ -16,7 +16,7 @@ class ChatRequest(BaseModel):
     message: str
 
 
-# ✅ CORS (for Next.js frontend)
+# ✅ CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -26,15 +26,26 @@ app.add_middleware(
 )
 
 
-# ✅ Run model download ONLY when server starts (NOT on import)
+# ✅ FIXED startup
 @app.on_event("startup")
 def startup_event():
+    global bot
+
+    print("🔄 Downloading model...")
     download_model()
+
+    print("🧠 Loading model...")
+    bot = ResponseGenerator()
+
+    print("✅ Model ready!")
 
 
 # ✅ Chat endpoint
 @app.post("/chat")
 def chat(req: ChatRequest):
+    if bot is None:
+        return {"error": "Model not ready yet"}
+
     result = bot.generate(req.message)
 
     return {
@@ -43,7 +54,7 @@ def chat(req: ChatRequest):
     }
 
 
-# ✅ Health check (VERY IMPORTANT for Render)
+# ✅ Health check
 @app.get("/")
 def root():
     return {"status": "API is running 🚀"}
